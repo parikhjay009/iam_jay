@@ -1,4 +1,4 @@
-# five-nines
+# iam_jay
 
 Jay Parikh's resume site — a single static page (HTML/CSS, no build step) auto-deployed to GitHub Pages via GitHub Actions every time `main` is updated.
 
