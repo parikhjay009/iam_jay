@@ -7,7 +7,7 @@
 <meta name="description" content="Jay Parikh — DevOps, Site Reliability & Platform Engineer. 9+ years building resilient AWS infrastructure, CI/CD pipelines, and observability systems.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg: #121116;
@@ -48,28 +48,45 @@
 
   /* ---------- top nav ---------- */
   .topnav{
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 50;
     backdrop-filter: blur(14px) saturate(140%);
     -webkit-backdrop-filter: blur(14px) saturate(140%);
     background: rgba(18,17,22,0.72);
     border-bottom: 1px solid var(--hair-soft);
+    transition: background .28s ease, border-color .28s ease, box-shadow .28s ease;
   }
   .nav-inner{
-    max-width: 1240px;
+    max-width: 1040px;
     margin: 0 auto;
     padding: 16px 28px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    transition: padding .28s ease;
   }
+  .topnav.is-scrolled{
+    background: rgba(10,9,13,0.92);
+    border-bottom-color: rgba(212,175,111,0.32);
+    box-shadow: 0 14px 36px -28px rgba(0,0,0,0.9);
+  }
+  .topnav.is-scrolled .nav-inner{ padding-top: 11px; padding-bottom: 11px; }
   .nav-logo{
-    font-family: var(--serif);
+    font-family: "Outfit", var(--sans);
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1.12rem;
+    letter-spacing: -0.02em;
     color: var(--ink);
-    letter-spacing: 0.01em;
+    text-decoration: none;
+    border-radius: 6px;
+  }
+  .nav-logo:hover{ color: var(--brass-2); }
+  .nav-logo:focus-visible{
+    outline: 2px solid var(--brass);
+    outline-offset: 4px;
   }
   .nav-logo .dot{ color: var(--brass); }
   .nav-links{ display: flex; align-items: center; gap: 28px; }
@@ -84,7 +101,7 @@
     color: #201a0d;
     font-weight: 600;
     padding: 8px 16px;
-    border-radius: 6px;
+    border-radius: 999px;
   }
   .nav-links .nav-cta:hover{ filter: brightness(1.08); }
   .nav-toggle{ display:none; }
@@ -95,234 +112,259 @@
   /* ---------- hero ---------- */
   .hero{
     position: relative;
-    min-height: 92vh;
+    min-height: 100svh;
     display: flex;
     align-items: center;
-    padding: 60px 28px;
+    padding: 92px 32px 78px;
     overflow: hidden;
     isolation: isolate;
   }
-
-  .hero-glow{
+  .aurora{
     position: absolute;
-    inset: -20%;
+    inset: 0;
     z-index: -2;
     background:
-      radial-gradient(680px 460px at 78% 28%, rgba(212,175,111,0.16), transparent 60%),
-      radial-gradient(520px 420px at 12% 78%, rgba(212,175,111,0.08), transparent 60%);
+      radial-gradient(320px 320px at 76% 48%, rgba(212,175,111,0.16), transparent 68%),
+      radial-gradient(380px 260px at 12% 92%, rgba(120,92,180,0.1), transparent 70%),
+      linear-gradient(180deg, #100f14 0%, #15141a 100%);
   }
-
-  .hero-grid{
+  .aurora::after{
+    content: "";
     position: absolute;
     inset: 0;
-    z-index: -2;
-    background-image: radial-gradient(rgba(255,255,255,0.055) 1px, transparent 1px);
-    background-size: 34px 34px;
-    mask-image: radial-gradient(ellipse 900px 600px at 60% 40%, black 10%, transparent 75%);
+    background-image: radial-gradient(rgba(255,255,255,0.045) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: linear-gradient(180deg, #000 0%, transparent 78%);
   }
-
-  .hero-icons{
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    color: var(--brass);
-    opacity: 0.16;
-  }
-  .hero-icons svg{ position: absolute; }
-  @keyframes floaty{
-    0%, 100%{ transform: translateY(0) rotate(var(--r, 0deg)); }
-    50%{ transform: translateY(-16px) rotate(var(--r, 0deg)); }
-  }
-  .hero-icons svg{ animation: floaty 7s ease-in-out infinite; }
-
-  .infinity-mark{
-    position: absolute;
-    right: 4%;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 380px;
-    height: 380px;
-    z-index: -1;
-    opacity: 0.9;
-  }
-  .infinity-mark svg{ width: 100%; height: 100%; }
-  .infinity-mark path{
-    fill: none;
-    stroke: url(#infGrad);
-    stroke-width: 3;
-    stroke-linecap: round;
-    filter: drop-shadow(0 0 22px rgba(212,175,111,0.35));
-  }
-  @keyframes spin-slow{ to{ transform: rotate(360deg); } }
-  .infinity-mark .ring{
-    animation: spin-slow 40s linear infinite;
-    transform-origin: center;
-  }
-  @media (max-width: 900px){ .infinity-mark{ opacity: 0.25; right: -8%; width: 300px; height: 300px; } }
-
   .hero-inner{
     position: relative;
-    max-width: 1240px;
+    max-width: 1180px;
     margin: 0 auto;
     width: 100%;
     display: grid;
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: 40px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 28px;
     align-items: center;
   }
-  @media (max-width: 900px){ .hero-inner{ grid-template-columns: 1fr; } }
-
   .status-pill{
     display: inline-flex;
     align-items: center;
     gap: 8px;
     font-family: var(--mono);
     font-size: 0.72rem;
+    letter-spacing: 0.04em;
     color: var(--brass-2);
     border: 1px solid var(--brass-dim);
-    background: rgba(212,175,111,0.06);
-    padding: 6px 12px;
+    background: rgba(212,175,111,0.08);
+    padding: 7px 13px;
     border-radius: 999px;
-    margin-bottom: 26px;
+    margin-bottom: 22px;
   }
   .status-pill .dot{
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--brass-2);
-    box-shadow: 0 0 0 0 rgba(240,210,154,0.6);
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #7dffa1;
+    box-shadow: 0 0 0 0 rgba(125,255,161,0.55);
     animation: pulse-dot 2s ease-out infinite;
   }
   @keyframes pulse-dot{
-    0%{ box-shadow: 0 0 0 0 rgba(240,210,154,0.5); }
-    70%{ box-shadow: 0 0 0 8px rgba(240,210,154,0); }
-    100%{ box-shadow: 0 0 0 0 rgba(240,210,154,0); }
+    0%{ box-shadow: 0 0 0 0 rgba(125,255,161,0.5); }
+    70%{ box-shadow: 0 0 0 8px rgba(125,255,161,0); }
+    100%{ box-shadow: 0 0 0 0 rgba(125,255,161,0); }
   }
-
   .hero h1{
-    font-family: var(--serif);
-    font-weight: 600;
-    font-size: clamp(3rem, 7vw, 5.2rem);
-    line-height: 0.98;
-    margin: 0 0 18px;
-    letter-spacing: -0.015em;
-    background: linear-gradient(100deg, var(--ink) 30%, var(--brass-2) 65%, var(--brass) 90%);
+    font-family: "Outfit", var(--sans);
+    font-weight: 500;
+    font-style: normal;
+    font-size: clamp(3.4rem, 5.4vw, 5.25rem);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    margin: 0 0 14px;
+    color: var(--ink);
+  }
+  .hero h1 .last{
+    display: block;
+    font-style: normal;
+    font-weight: 500;
+    background: linear-gradient(100deg, #fff 10%, var(--brass-2) 70%, var(--brass) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
-
   .tagline{
-    font-family: var(--serif);
-    font-style: italic;
-    font-weight: 400;
-    font-size: 1.3rem;
+    font-size: 1.05rem;
+    line-height: 1.55;
     color: var(--ink-dim);
-    max-width: 34ch;
-    margin: 0 0 30px;
+    max-width: 36ch;
+    margin: 0 0 22px;
   }
-
   .contact-row{
-    font-size: 0.86rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
     color: var(--ink-faint);
     display: flex;
     flex-wrap: wrap;
-    gap: 6px 22px;
-    margin-bottom: 34px;
+    gap: 8px 18px;
+    margin: 18px 0 0;
   }
-  .contact-row a{ text-decoration: none; color: var(--ink-faint); border-bottom: 1px solid transparent; }
-  .contact-row a:hover{ color: var(--brass-2); border-color: var(--brass-dim); }
-
-  .btn-row{ display: flex; gap: 14px; flex-wrap: wrap; }
+  .contact-row a{ text-decoration: none; color: var(--ink-dim); }
+  .contact-row a:hover{ color: var(--brass-2); }
+  .btn-row{ display: flex; gap: 12px; flex-wrap: wrap; }
   .btn{
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    padding: 13px 24px;
-    border-radius: 8px;
+    padding: 13px 22px;
+    border-radius: 999px;
     text-decoration: none;
     border: 1px solid var(--glass-brd);
     color: var(--ink);
-    background: var(--glass);
-    backdrop-filter: blur(6px);
+    background: rgba(255,255,255,0.04);
   }
   .btn.primary{
     background: linear-gradient(135deg, var(--brass-2), var(--brass));
     color: #201a0d;
     border: none;
-    box-shadow: 0 10px 30px -8px rgba(212,175,111,0.55);
+    box-shadow: 0 14px 40px -16px rgba(212,175,111,0.8);
   }
   .btn.primary:hover{ filter: brightness(1.06); transform: translateY(-1px); }
-  .btn:not(.primary):hover{ border-color: var(--brass-dim); background: rgba(255,255,255,0.06); }
+  .btn:not(.primary):hover{ border-color: var(--brass-dim); background: rgba(255,255,255,0.08); }
   .btn{ transition: transform .18s ease, filter .18s ease, background .18s ease, border-color .18s ease; }
-
-  .portrait-col{ display: flex; justify-content: center; position: relative; }
-  .portrait-wrap{ position: relative; width: 260px; height: 260px; }
-  .orbit-logos{ position: absolute; inset: 0; pointer-events: none; }
-  .orbit-logo{
-    position: absolute;
-    width: 44px; height: 44px;
-    border-radius: 50%;
-    background: var(--bg-alt, #17161c);
-    border: 1px solid var(--glass-brd, rgba(255,255,255,0.08));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 10px 26px -10px rgba(0,0,0,0.6);
-    animation: floaty 6.5s ease-in-out infinite;
-    pointer-events: auto;
+  .hero-stage{
+    --portrait: 244px;
+    --r-in: 214px;
+    --s-in: 34px;
+    --r-out: 268px;
+    --s-out: 28px;
+    position: relative;
+    flex: none;
+    width: calc(var(--r-out) * 2 + var(--s-out));
+    height: calc(var(--r-out) * 2 + var(--s-out));
   }
-  .orbit-logo svg{ width: 22px; height: 22px; fill: var(--brand); color: var(--brand); }
-  .orbit-logo.l1{ top: -18px;  left: -32px;  animation-delay: 0s; }
-  .orbit-logo.l2{ top: 6%;     right: -40px; animation-delay: 0.9s; }
-  .orbit-logo.l3{ top: 46%;    left: -52px;  animation-delay: 1.8s; }
-  .orbit-logo.l4{ top: 46%;    right: -52px; animation-delay: 0.5s; }
-  .orbit-logo.l5{ bottom: 4%;  left: -34px;  animation-delay: 2.4s; }
-  .orbit-logo.l6{ bottom: -16px; right: -14px; animation-delay: 1.3s; }
-  .orbit-logo.l7{ bottom: -20px; left: 30%;  animation-delay: 1.9s; }
-  @media (max-width: 900px){
-    .orbit-logo{ width: 36px; height: 36px; }
-    .orbit-logo svg{ width: 18px; height: 18px; }
-    .orbit-logo.l1{ left: -14px; top: -10px; }
-    .orbit-logo.l2{ right: -16px; }
-    .orbit-logo.l3{ left: -22px; }
-    .orbit-logo.l4{ right: -22px; }
-    .orbit-logo.l5{ left: -14px; }
-    .orbit-logo.l6{ right: 0; }
-    .orbit-logo.l7{ left: 40%; }
-  }
-  .portrait-ring{
-    position: absolute;
-    inset: -14px;
-    border-radius: 50%;
-    border: 1px dashed var(--brass-dim);
-    animation: spin-slow 60s linear infinite;
-  }
-  .portrait{
-    width: 100%; height: 100%;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 2px solid var(--brass-dim);
-    box-shadow: 0 20px 60px -20px rgba(212,175,111,0.4), 0 0 0 10px rgba(255,255,255,0.02);
-  }
-  .portrait img{ width:100%; height:100%; object-fit: cover; display:block; filter: contrast(1.04) saturate(0.95); }
-  @media (max-width: 900px){ .portrait-wrap{ width: 190px; height: 190px; margin: 0 auto; } }
-
-  .scroll-cue{
+  .hero-stage::before{
+    content: "";
     position: absolute;
     left: 50%;
-    bottom: 30px;
-    transform: translateX(-50%);
-    font-family: var(--mono);
-    font-size: 0.7rem;
-    color: var(--ink-faint);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
+    top: 50%;
+    width: calc(var(--portrait) + 36px);
+    height: calc(var(--portrait) + 36px);
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,175,111,0.16) 0%, transparent 68%);
+    pointer-events: none;
+    z-index: 0;
   }
-  .scroll-cue .line{ width:1px; height:28px; background: linear-gradient(var(--brass), transparent); animation: scrolldown 1.8s ease-in-out infinite; }
-  @keyframes scrolldown{ 0%{ opacity: 0; transform: scaleY(0.4); transform-origin: top;} 50%{ opacity:1; transform: scaleY(1); transform-origin: top;} 100%{ opacity:0; transform: scaleY(0.4); transform-origin: bottom;} }
+  .logo-orbit{ position: absolute; inset: 0; z-index: 1; }
+  .orbit-slot{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: var(--s);
+    height: var(--s);
+    margin-left: calc(var(--s) / -2);
+    margin-top: calc(var(--s) / -2);
+    transform: rotate(var(--a)) translateY(calc(var(--r) * -1)) rotate(calc(var(--a) * -1));
+  }
+  .orbit-slot.on-plate{
+    background: #f4f0e8;
+    border-radius: 9px;
+    padding: 5px;
+    box-sizing: border-box;
+  }
+  .orbit-bob{
+    display: block;
+    width: 100%;
+    height: 100%;
+    animation: logo-drift 7.5s ease-in-out infinite;
+    animation-delay: var(--d, 0s);
+  }
+  .orbit-slot img{ width: 100%; height: 100%; display: block; }
+  @keyframes logo-drift{
+    0%, 100%{ transform: translateY(0); }
+    50%{ transform: translateY(-5px); }
+  }
+  .portrait-card{
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: var(--portrait);
+    height: var(--portrait);
+    aspect-ratio: 1;
+    border-radius: 22px;
+    overflow: hidden;
+    background: #8d97a3;
+    box-shadow:
+      0 0 0 1px rgba(240,210,154,0.45),
+      0 0 0 7px rgba(212,175,111,0.08),
+      0 22px 40px -24px rgba(0,0,0,0.75);
+  }
+  .portrait-card::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(160deg, rgba(240,210,154,0.85), rgba(255,255,255,0.05) 42%, rgba(212,175,111,0.4));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .portrait-card img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+  }
+  .ticker{
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    overflow: hidden;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    background: rgba(8,7,10,0.35);
+    padding: 13px 0;
+    mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  }
+  .ticker-track{
+    display: flex;
+    gap: 32px;
+    width: max-content;
+    animation: ticker 32s linear infinite;
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+  .ticker-track span{ display: inline-flex; align-items: center; gap: 32px; }
+  .ticker-track span::after{
+    content: "";
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--brass);
+  }
+  @keyframes ticker{ to{ transform: translateX(-50%); } }
+  @media (max-width: 860px){
+    .hero{ align-items: flex-start; padding: 96px 22px 84px; min-height: auto; }
+    .hero-inner{ grid-template-columns: 1fr; gap: 22px; justify-items: start; }
+    .hero h1{ font-size: clamp(3.15rem, 13vw, 4.2rem); }
+    .hero-stage{
+      --portrait: 150px;
+      --r-in: 132px;
+      --s-in: 18px;
+      --r-out: 164px;
+      --s-out: 15px;
+      order: -1;
+      margin-inline: auto;
+    }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .ticker-track, .status-pill .dot, .orbit-bob{ animation: none; }
+  }
 
   /* ---------- bands / sections ---------- */
   .band{
@@ -335,6 +377,11 @@
 
   .reveal{ opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
   .reveal.in-view{ opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    .reveal{ opacity: 1; transform: none; transition: none; }
+    .topnav, .nav-inner{ transition: none; }
+  }
 
   .section-label{
     font-family: var(--mono);
@@ -476,7 +523,7 @@
 
 <nav class="topnav">
   <div class="nav-inner">
-    <span class="nav-logo">Jay Parikh<span class="dot">.</span></span>
+    <a class="nav-logo" href="#top">Jay Parikh<span class="dot">.</span></a>
     <div class="nav-links">
       <a href="#capabilities">Capabilities</a>
       <a href="#experience">Experience</a>
@@ -486,55 +533,135 @@
   </div>
 </nav>
 
-<header class="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-grid"></div>
-  <div class="hero-icons" aria-hidden="true">
-    <svg style="width:34px;height:34px;top:16%;left:8%;--r:-8deg;animation-delay:0s"><use href="#i-cloud"/></svg>
-    <svg style="width:30px;height:30px;top:66%;left:6%;--r:6deg;animation-delay:1.2s"><use href="#i-terminal"/></svg>
-    <svg style="width:26px;height:26px;top:80%;left:22%;--r:0deg;animation-delay:2.1s"><use href="#i-gear"/></svg>
-    <svg style="width:30px;height:30px;top:12%;left:40%;--r:4deg;animation-delay:0.6s"><use href="#i-network"/></svg>
-    <svg style="width:24px;height:24px;top:42%;left:2%;--r:-4deg;animation-delay:1.8s"><use href="#i-cube"/></svg>
-    <svg style="width:26px;height:26px;top:8%;left:64%;--r:0deg;animation-delay:2.6s"><use href="#i-pulse"/></svg>
-    <svg style="width:22px;height:22px;top:78%;left:46%;--r:6deg;animation-delay:0.9s"><use href="#i-spark"/></svg>
-  </div>
-
-  <div class="infinity-mark" aria-hidden="true">
-    <svg viewBox="0 0 48 24" class="ring"><use href="#i-infinity"/></svg>
-  </div>
-
+<header class="hero" id="top">
+  <div class="aurora" aria-hidden="true"></div>
   <div class="hero-inner">
-    <div>
-      <div class="status-pill"><span class="dot"></span> Vancouver, BC — open to opportunities</div>
-      <h1>Jay Parikh</h1>
-      <p class="tagline">Nine years keeping distributed systems awake — DevOps, Site Reliability &amp; Platform Engineering.</p>
+    <div class="hero-copy">
+      <div class="status-pill"><span class="dot"></span> Vancouver, BC 🇨🇦 — Seeking new challenges</div>
+      <h1>Jay<span class="last">Parikh</span></h1>
+      <p class="tagline">DevOps, site reliability, and platform engineering. Nine years keeping production systems awake.</p>
+      <div class="btn-row">
+        <a class="btn primary" href="assets/Jay_Parikh_Resume.pdf" download>Download résumé</a>
+        <a class="btn" href="mailto:parikhjay009@gmail.com">Get in touch</a>
+      </div>
       <div class="contact-row">
         <a href="mailto:parikhjay009@gmail.com">parikhjay009@gmail.com</a>
         <a href="tel:+17807086756">780-708-6756</a>
       </div>
-      <div class="btn-row">
-        <a class="btn primary" href="assets/Jay_Parikh_Resume.pdf" download>Download résumé (PDF)</a>
-        <a class="btn" href="mailto:parikhjay009@gmail.com">Get in touch</a>
-      </div>
     </div>
-    <div class="portrait-col">
-      <div class="portrait-wrap">
-        <div class="portrait-ring"></div>
-        <div class="portrait"><img src="assets/jay-parikh.png" alt="Portrait of Jay Parikh"></div>
-        <div class="orbit-logos" aria-hidden="true">
-          <div class="orbit-logo l1" style="--brand:#2496ED" title="Docker"><svg><use href="#logo-docker"/></svg></div>
-          <div class="orbit-logo l2" style="--brand:#326CE5" title="Kubernetes"><svg><use href="#logo-kubernetes"/></svg></div>
-          <div class="orbit-logo l3" style="--brand:#844FBA" title="Terraform"><svg><use href="#logo-terraform"/></svg></div>
-          <div class="orbit-logo l4" style="--brand:#FF9900" title="AWS"><svg style="fill:none;stroke:var(--brand);stroke-width:1.4"><use href="#i-cloud"/></svg></div>
-          <div class="orbit-logo l5" style="--brand:#F03C2E" title="Git"><svg><use href="#logo-git"/></svg></div>
-          <div class="orbit-logo l6" style="--brand:#3776AB" title="Python"><svg><use href="#logo-python"/></svg></div>
-          <div class="orbit-logo l7" style="--brand:#F46800" title="Grafana"><svg><use href="#logo-grafana"/></svg></div>
-        </div>
+    <div class="hero-stage">
+      <div class="logo-orbit">
+        <span class="orbit-slot" style="--a:-90.00deg; --r:var(--r-in); --s:var(--s-in); --d:-0.00s">
+          <span class="orbit-bob"><img src="assets/logos/aws.svg" alt="AWS"></span>
+        </span>
+        <span class="orbit-slot" style="--a:-67.50deg; --r:var(--r-in); --s:var(--s-in); --d:-0.31s">
+          <span class="orbit-bob"><img src="assets/logos/kubernetes.svg" alt="Kubernetes"></span>
+        </span>
+        <span class="orbit-slot" style="--a:-45.00deg; --r:var(--r-in); --s:var(--s-in); --d:-0.62s">
+          <span class="orbit-bob"><img src="assets/logos/terraform.svg" alt="Terraform"></span>
+        </span>
+        <span class="orbit-slot" style="--a:-22.50deg; --r:var(--r-in); --s:var(--s-in); --d:-0.93s">
+          <span class="orbit-bob"><img src="assets/logos/docker.svg" alt="Docker"></span>
+        </span>
+        <span class="orbit-slot" style="--a:0.00deg; --r:var(--r-in); --s:var(--s-in); --d:-1.24s">
+          <span class="orbit-bob"><img src="assets/logos/jenkins.svg" alt="Jenkins"></span>
+        </span>
+        <span class="orbit-slot on-plate" style="--a:22.50deg; --r:var(--r-in); --s:var(--s-in); --d:-1.55s">
+          <span class="orbit-bob"><img src="assets/logos/github.svg" alt="GitHub"></span>
+        </span>
+        <span class="orbit-slot" style="--a:45.00deg; --r:var(--r-in); --s:var(--s-in); --d:-1.86s">
+          <span class="orbit-bob"><img src="assets/logos/prometheus.svg" alt="Prometheus"></span>
+        </span>
+        <span class="orbit-slot" style="--a:67.50deg; --r:var(--r-in); --s:var(--s-in); --d:-2.17s">
+          <span class="orbit-bob"><img src="assets/logos/grafana.svg" alt="Grafana"></span>
+        </span>
+        <span class="orbit-slot" style="--a:90.00deg; --r:var(--r-in); --s:var(--s-in); --d:-2.48s">
+          <span class="orbit-bob"><img src="assets/logos/python.svg" alt="Python"></span>
+        </span>
+        <span class="orbit-slot" style="--a:112.50deg; --r:var(--r-in); --s:var(--s-in); --d:-2.79s">
+          <span class="orbit-bob"><img src="assets/logos/datadog.svg" alt="Datadog"></span>
+        </span>
+        <span class="orbit-slot" style="--a:135.00deg; --r:var(--r-in); --s:var(--s-in); --d:-3.10s">
+          <span class="orbit-bob"><img src="assets/logos/ansible.svg" alt="Ansible"></span>
+        </span>
+        <span class="orbit-slot" style="--a:157.50deg; --r:var(--r-in); --s:var(--s-in); --d:-3.41s">
+          <span class="orbit-bob"><img src="assets/logos/linux.svg" alt="Linux"></span>
+        </span>
+        <span class="orbit-slot" style="--a:180.00deg; --r:var(--r-in); --s:var(--s-in); --d:-3.72s">
+          <span class="orbit-bob"><img src="assets/logos/azure.svg" alt="Azure"></span>
+        </span>
+        <span class="orbit-slot" style="--a:202.50deg; --r:var(--r-in); --s:var(--s-in); --d:-4.03s">
+          <span class="orbit-bob"><img src="assets/logos/googlecloud.svg" alt="Google Cloud"></span>
+        </span>
+        <span class="orbit-slot" style="--a:225.00deg; --r:var(--r-in); --s:var(--s-in); --d:-4.34s">
+          <span class="orbit-bob"><img src="assets/logos/argo.svg" alt="Argo CD"></span>
+        </span>
+        <span class="orbit-slot" style="--a:247.50deg; --r:var(--r-in); --s:var(--s-in); --d:-4.65s">
+          <span class="orbit-bob"><img src="assets/logos/githubactions.svg" alt="GitHub Actions"></span>
+        </span>
+        <span class="orbit-slot" style="--a:-79.41deg; --r:var(--r-out); --s:var(--s-out); --d:-0.00s">
+          <span class="orbit-bob"><img src="assets/logos/puppet.svg" alt="Puppet"></span>
+        </span>
+        <span class="orbit-slot on-plate" style="--a:-58.24deg; --r:var(--r-out); --s:var(--s-out); --d:-0.31s">
+          <span class="orbit-bob"><img src="assets/logos/splunk.svg" alt="Splunk"></span>
+        </span>
+        <span class="orbit-slot" style="--a:-37.06deg; --r:var(--r-out); --s:var(--s-out); --d:-0.62s">
+          <span class="orbit-bob"><img src="assets/logos/newrelic.svg" alt="New Relic"></span>
+        </span>
+        <span class="orbit-slot" style="--a:-15.88deg; --r:var(--r-out); --s:var(--s-out); --d:-0.93s">
+          <span class="orbit-bob"><img src="assets/logos/elasticsearch.svg" alt="Elasticsearch"></span>
+        </span>
+        <span class="orbit-slot" style="--a:5.29deg; --r:var(--r-out); --s:var(--s-out); --d:-1.24s">
+          <span class="orbit-bob"><img src="assets/logos/logstash.svg" alt="Logstash"></span>
+        </span>
+        <span class="orbit-slot" style="--a:26.47deg; --r:var(--r-out); --s:var(--s-out); --d:-1.55s">
+          <span class="orbit-bob"><img src="assets/logos/kibana.svg" alt="Kibana"></span>
+        </span>
+        <span class="orbit-slot on-plate" style="--a:47.65deg; --r:var(--r-out); --s:var(--s-out); --d:-1.86s">
+          <span class="orbit-bob"><img src="assets/logos/opentelemetry.svg" alt="OpenTelemetry"></span>
+        </span>
+        <span class="orbit-slot" style="--a:68.82deg; --r:var(--r-out); --s:var(--s-out); --d:-2.17s">
+          <span class="orbit-bob"><img src="assets/logos/pagerduty.svg" alt="PagerDuty"></span>
+        </span>
+        <span class="orbit-slot" style="--a:90.00deg; --r:var(--r-out); --s:var(--s-out); --d:-2.48s">
+          <span class="orbit-bob"><img src="assets/logos/snyk.svg" alt="Snyk"></span>
+        </span>
+        <span class="orbit-slot" style="--a:111.18deg; --r:var(--r-out); --s:var(--s-out); --d:-2.79s">
+          <span class="orbit-bob"><img src="assets/logos/sonarqube.svg" alt="SonarQube"></span>
+        </span>
+        <span class="orbit-slot" style="--a:132.35deg; --r:var(--r-out); --s:var(--s-out); --d:-3.10s">
+          <span class="orbit-bob"><img src="assets/logos/bash.svg" alt="Bash"></span>
+        </span>
+        <span class="orbit-slot" style="--a:153.53deg; --r:var(--r-out); --s:var(--s-out); --d:-3.41s">
+          <span class="orbit-bob"><img src="assets/logos/wireshark.svg" alt="Wireshark"></span>
+        </span>
+        <span class="orbit-slot on-plate" style="--a:174.71deg; --r:var(--r-out); --s:var(--s-out); --d:-3.72s">
+          <span class="orbit-bob"><img src="assets/logos/cursor.svg" alt="Cursor"></span>
+        </span>
+        <span class="orbit-slot" style="--a:195.88deg; --r:var(--r-out); --s:var(--s-out); --d:-4.03s">
+          <span class="orbit-bob"><img src="assets/logos/claude.svg" alt="Claude"></span>
+        </span>
+        <span class="orbit-slot" style="--a:217.06deg; --r:var(--r-out); --s:var(--s-out); --d:-4.34s">
+          <span class="orbit-bob"><img src="assets/logos/mysql.svg" alt="MySQL"></span>
+        </span>
+        <span class="orbit-slot" style="--a:238.24deg; --r:var(--r-out); --s:var(--s-out); --d:-4.65s">
+          <span class="orbit-bob"><img src="assets/logos/opensearch.svg" alt="OpenSearch"></span>
+        </span>
+        <span class="orbit-slot on-plate" style="--a:259.41deg; --r:var(--r-out); --s:var(--s-out); --d:-4.96s">
+          <span class="orbit-bob"><img src="assets/logos/githubcopilot.svg" alt="GitHub Copilot"></span>
+        </span>
+      </div>
+      <div class="portrait-card">
+        <img src="assets/jay-parikh.png" alt="Portrait of Jay Parikh">
       </div>
     </div>
   </div>
-
-  <div class="scroll-cue"><span>scroll</span><span class="line"></span></div>
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>AWS</span><span>Kubernetes</span><span>Terraform</span><span>Docker</span><span>GitHub Actions</span><span>Jenkins</span><span>Prometheus</span><span>Grafana</span><span>Python</span><span>Datadog</span><span>ArgoCD</span><span>Linux</span>
+      <span>AWS</span><span>Kubernetes</span><span>Terraform</span><span>Docker</span><span>GitHub Actions</span><span>Jenkins</span><span>Prometheus</span><span>Grafana</span><span>Python</span><span>Datadog</span><span>ArgoCD</span><span>Linux</span>
+    </div>
+  </div>
 </header>
 
 <main>
@@ -551,16 +678,16 @@
       <p class="section-label">Capabilities</p>
       <h2 class="section-title">The toolchain, end to end</h2>
       <div class="cap-grid">
-        <div class="cap-card"><svg class="cap-icon"><use href="#i-cloud"/></svg><h3>Cloud &amp; infrastructure</h3><p>AWS (EC2, S3, RDS, Redshift, ElastiCache, Lambda, IAM, VPC, CloudWatch, Route 53, SSM, Control Tower, GuardDuty), GCP &amp; Azure basics</p></div>
+        <div class="cap-card"><svg class="cap-icon"><use href="#i-cloud"/></svg><h3>Cloud &amp; infrastructure</h3><p>AWS (EC2, S3, RDS, Redshift, ElastiCache, Lambda, Elastic Beanstalk, IAM, VPC, CloudWatch, Route 53, SSM), GCP &amp; Azure basics</p></div>
         <div class="cap-card"><svg class="cap-icon"><use href="#i-gear"/></svg><h3>IaC &amp; config management</h3><p>Terraform, CloudFormation, CDK, Ansible, Puppet</p></div>
-        <div class="cap-card"><svg class="cap-icon"><use href="#i-cube"/></svg><h3>Containers &amp; orchestration</h3><p>Docker, Kubernetes (EKS), Helm, Istio</p></div>
+        <div class="cap-card"><svg class="cap-icon"><use href="#i-cube"/></svg><h3>Containers &amp; orchestration</h3><p>Docker, Kubernetes (EKS)</p></div>
         <div class="cap-card"><svg class="cap-icon" style="width:34px;height:17px;margin-bottom:19px"><use href="#i-infinity"/></svg><h3>CI/CD &amp; GitOps</h3><p>Jenkins, GitHub Actions, ArgoCD, GitHub Enterprise</p></div>
         <div class="cap-card"><svg class="cap-icon"><use href="#i-pulse"/></svg><h3>Observability</h3><p>Prometheus, Grafana, Datadog, Splunk, New Relic, ELK Stack, OpenTelemetry, PagerDuty</p></div>
-        <div class="cap-card"><svg class="cap-icon"><use href="#i-shield"/></svg><h3>SRE practices</h3><p>SLOs/SLIs, error budgets, incident response, postmortems, chaos engineering, DORA metrics, capacity planning</p></div>
-        <div class="cap-card"><svg class="cap-icon"><use href="#i-lock"/></svg><h3>Security &amp; compliance</h3><p>DevSecOps, IAM, KMS, HashiCorp Vault, Black Duck, Snyk, SonarQube, SCPs</p></div>
-        <div class="cap-card"><svg class="cap-icon"><use href="#i-terminal"/></svg><h3>Scripting</h3><p>Python, Bash, Go (basics)</p></div>
+        <div class="cap-card"><svg class="cap-icon"><use href="#i-shield"/></svg><h3>SRE practices</h3><p>SLOs/SLIs, error budgets, incident response, postmortems, capacity planning</p></div>
+        <div class="cap-card"><svg class="cap-icon"><use href="#i-lock"/></svg><h3>Security &amp; compliance</h3><p>DevSecOps, IAM, KMS, secrets management, Black Duck, Snyk, SonarQube, SCPs</p></div>
+        <div class="cap-card"><svg class="cap-icon"><use href="#i-terminal"/></svg><h3>Scripting</h3><p>Python, Bash</p></div>
         <div class="cap-card"><svg class="cap-icon"><use href="#i-network"/></svg><h3>Networking &amp; OS</h3><p>Linux, TCP/IP, VPNs, DNS, DHCP, NAT, BGP, OSPF, firewalls, load balancers, Wireshark, TCPDUMP</p></div>
-        <div class="cap-card"><svg class="cap-icon"><use href="#i-spark"/></svg><h3>AI-powered dev tools</h3><p>Claude Code, GitHub Copilot, Cursor, Gemini, GPT, Perplexity</p></div>
+        <div class="cap-card"><svg class="cap-icon"><use href="#i-spark"/></svg><h3>AI-powered dev tools</h3><p>Cursor, GitHub Copilot, Codex, Claude Code, Antigravity</p></div>
       </div>
     </div>
   </section>
@@ -575,7 +702,7 @@
           <div class="role-when">Apr 2022 — Present<br><span class="now">current</span></div>
           <div>
             <p class="role-title">DevOps Engineer</p>
-            <p class="role-org">Mastercard, Vancouver BC</p>
+            <p class="role-org">Mastercard, Vancouver 🇨🇦</p>
             <ul>
               <li>Built CI/CD pipelines in Jenkins and GitHub Actions for microservices, cutting deployment lead time by 40%.</li>
               <li>Ran containerized workloads on EKS across AWS production, holding 99.9%+ uptime for critical services.</li>
@@ -585,7 +712,6 @@
               <li>Set SLOs/SLIs and error budgets that drove measurable gains in DORA metrics.</li>
               <li>Partnered with security on IAM policy, KMS, vulnerability scanning (Black Duck, Snyk), and secrets management.</li>
               <li>Cut cloud spend 20%+ through Cost Explorer analysis and rightsizing, while tuning MySQL RDS and OpenSearch.</li>
-              <li>Automated Redshift loads, S3 log parsing, and ETL with Python and Bash over SSM.</li>
               <li>Remediated GuardDuty findings and Control Tower/SCP violations across multi-account environments.</li>
               <li>Used Copilot, Cursor, and Claude Code to speed up automation, scripting, and incident troubleshooting.</li>
             </ul>
@@ -596,7 +722,7 @@
           <div class="role-when">Jan 2019 — Apr 2022</div>
           <div>
             <p class="role-title">Cloud Infrastructure Engineer</p>
-            <p class="role-org">Sophos Inc, Vancouver BC</p>
+            <p class="role-org">Sophos Inc, Vancouver 🇨🇦</p>
             <ul>
               <li>Ran AWS infrastructure with automated backups, patching, and auto-scaling for reliability and cost efficiency.</li>
               <li>Automated config management with Puppet and Ansible, cutting manual deployment effort by 60%.</li>
@@ -612,12 +738,26 @@
           <div class="role-when">Apr 2017 — Jan 2019</div>
           <div>
             <p class="role-title">Network Security Engineer</p>
-            <p class="role-org">Sophos Inc, Vancouver BC</p>
+            <p class="role-org">Sophos Inc, Vancouver 🇨🇦</p>
             <ul>
               <li>Delivered L3/L4 support for VIP customers on Sophos NSG products, covering HA, link redundancy, and BGP/OSPF routing.</li>
               <li>Ran root-cause analysis on complex network issues with Linux, Wireshark, and TCPDUMP at 95%+ first-contact resolution.</li>
               <li>Managed VPN, DNS, DHCP, NAT, and firewall configuration for enterprise environments.</li>
               <li>Wrote Python and Bash tooling for log analysis and network diagnostics, cutting manual troubleshooting time.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="role-card">
+          <div class="role-when">Jan 2014 — Jul 2015</div>
+          <div>
+            <p class="role-title">Technical Support Engineer</p>
+            <p class="role-org">Cyberoam Technologies (a Sophos company), India 🇮🇳</p>
+            <ul>
+              <li>Delivered technical support for enterprise network security products, troubleshooting connectivity, configuration, and performance issues for business customers.</li>
+              <li>Diagnosed and resolved network and security-related incidents using logs, packet analysis, and system diagnostics to restore service quickly.</li>
+              <li>Guided customers through product setup, upgrades, and best-practice configurations, reducing repeat support contacts.</li>
+              <li>Documented issues, resolutions, and known error patterns to improve team knowledge and speed up future troubleshooting.</li>
             </ul>
           </div>
         </div>
@@ -655,10 +795,18 @@
 <script>
   document.getElementById('rev').textContent = 'updated ' + new Date().toISOString().slice(0,10);
 
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); } });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const nav = document.querySelector('.topnav');
+  const markScrolled = () => nav.classList.toggle('is-scrolled', window.scrollY > 16);
+  markScrolled();
+  window.addEventListener('scroll', markScrolled, { passive: true });
+
+  if (!reduceMotion) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  }
 </script>
 </body>
 </html>
