@@ -197,24 +197,38 @@
     max-width: 36ch;
     margin: 0 0 22px;
   }
-  .contact-row{
-    font-family: var(--mono);
-    font-size: 0.78rem;
-    color: var(--ink-faint);
+  .btn-row{ display: flex; gap: 12px; flex-wrap: wrap; }
+  .contact-actions{
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 18px;
-    margin: 18px 0 0;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 14px 0 0;
   }
-  .contact-row a{ text-decoration: none; color: var(--ink-dim); }
-  .contact-row a:hover{ color: var(--brass-2); }
-  .btn-row{ display: flex; gap: 12px; flex-wrap: wrap; }
+  .reach{ display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+  .email-reveal{
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--brass-2);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .email-reveal:hover{ border-bottom-color: var(--brass-dim); }
+  @media (prefers-reduced-motion: no-preference){
+    .email-reveal{ animation: email-in .22s ease; }
+  }
+  @keyframes email-in{
+    from{ opacity: 0; transform: translateY(-4px); }
+    to{ opacity: 1; transform: none; }
+  }
   .btn{
     display: inline-flex;
     align-items: center;
+    box-sizing: border-box;
     gap: 8px;
     font-size: 0.9rem;
     font-weight: 600;
+    line-height: 1.2;
     padding: 13px 22px;
     border-radius: 999px;
     text-decoration: none;
@@ -231,6 +245,15 @@
   .btn.primary:hover{ filter: brightness(1.06); transform: translateY(-1px); }
   .btn:not(.primary):hover{ border-color: var(--brass-dim); background: rgba(255,255,255,0.08); }
   .btn{ transition: transform .18s ease, filter .18s ease, background .18s ease, border-color .18s ease; }
+  button.btn{
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+    appearance: none;
+  }
+  .btn:focus-visible{ outline: 2px solid var(--brass-2); outline-offset: 3px; }
   .hero-stage{
     --portrait: 244px;
     --r-in: 214px;
@@ -485,6 +508,19 @@
   }
   footer a{ text-decoration: none; color: var(--ink-faint); border-bottom: 1px solid transparent; }
   footer a:hover{ color: var(--brass-2); border-color: var(--brass-dim); }
+  footer .contact-actions{ margin: 0; }
+  footer a.btn{
+    color: var(--ink);
+    border: 1px solid var(--glass-brd);
+    font-size: 0.9rem;
+  }
+  footer a.btn:hover{
+    color: var(--ink);
+    border-color: var(--brass-dim);
+    background: rgba(255,255,255,0.08);
+  }
+  footer a.email-reveal{ color: var(--brass-2); }
+  footer a.email-reveal:hover{ color: var(--brass-2); border-bottom-color: var(--brass-dim); }
 </style>
 </head>
 <body>
@@ -543,8 +579,12 @@
       <div class="btn-row">
         <a class="btn primary" href="assets/Jay_Parikh_Resume.pdf" download>Download résumé</a>
       </div>
-      <div class="contact-row">
-        <a href="https://www.linkedin.com/in/jay-parikh-techopscloud/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <div class="contact-actions">
+        <div class="reach">
+          <button type="button" class="btn" aria-expanded="false" aria-controls="hero-email">Get in touch</button>
+          <a id="hero-email" class="email-reveal" href="mailto:parikhjay009@gmail.com" hidden>parikhjay009@gmail.com</a>
+        </div>
+        <a class="btn" href="https://www.linkedin.com/in/jay-parikh-techopscloud/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
       </div>
     </div>
     <div class="hero-stage">
@@ -786,11 +826,29 @@
 </main>
 
 <footer>
-  <span>Vancouver, BC — <a href="https://www.linkedin.com/in/jay-parikh-techopscloud/" target="_blank" rel="noopener noreferrer">LinkedIn</a></span>
+  <span>Vancouver, BC</span>
+  <div class="contact-actions">
+    <div class="reach">
+      <button type="button" class="btn" aria-expanded="false" aria-controls="footer-email">Get in touch</button>
+      <a id="footer-email" class="email-reveal" href="mailto:parikhjay009@gmail.com" hidden>parikhjay009@gmail.com</a>
+    </div>
+    <a class="btn" href="https://www.linkedin.com/in/jay-parikh-techopscloud/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  </div>
   <span>Made with Love ❤️ for Automation</span>
 </footer>
 
 <script>
+  document.querySelectorAll('.reach').forEach(reach => {
+    const btn = reach.querySelector('button');
+    const mail = reach.querySelector('.email-reveal');
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') !== 'true';
+      btn.setAttribute('aria-expanded', String(open));
+      mail.hidden = !open;
+      if (open) mail.focus();
+    });
+  });
+
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const nav = document.querySelector('.topnav');
   const markScrolled = () => nav.classList.toggle('is-scrolled', window.scrollY > 16);
